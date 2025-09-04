@@ -139,7 +139,6 @@ class BaseInferenceClient(ABC):
                     elif isinstance(msg, ErrorMessage):
                         print(f"Server error: {msg.error}")
 
-
                 time_seconds = int(time.time())
                 if time_seconds % 5 == 0 and (time_seconds - last_heartbeat_send) >= 5:
                     self.writer.send_message(Heartbeat(timestamp=time.time()))

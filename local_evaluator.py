@@ -98,12 +98,7 @@ class LocalEvaluator:
         for tower_idx, abs_errors in tower_accuracies.items():
             max_error = max(abs_errors)
             mean_error = np.mean(abs_errors)
-            good = len([x for x in abs_errors if x < 1e-3])
-            stats_dict[f"tower_{tower_idx}"] = (
-                max_error,
-                mean_error,
-                good / len(abs_errors),
-            )
+            stats_dict[f"tower_{tower_idx}"] = (max_error, mean_error)
 
         return stats_dict
 
@@ -115,10 +110,8 @@ class LocalEvaluator:
 
         print("Tower Accuracies:")  # We have 4 towers
         for tower_idx in range(4):
-            max_error, mean_error, good_frac = metrics[f"tower_{tower_idx}"]
-            print(
-                f"Tower {tower_idx}: {max_error = :.4f}, {mean_error = :.4f}, {good_frac = :4f}"
-            )
+            max_error, mean_error = metrics[f"tower_{tower_idx}"]
+            print(f"Tower {tower_idx}: {max_error = :.4f}, {mean_error = :.4f}")
 
 
 def main():
