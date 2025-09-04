@@ -37,7 +37,6 @@ class NnInferenceClient(BaseInferenceClient):
         num_symbols: int,
         server_host: str = "localhost",
         server_port: int = 8080,
-        model_latency_ms: float = 10.0,
         device: str | None = None,
         token: str | None = None,
     ):

@@ -11,13 +11,23 @@ You need to balance 3 different metrics
 - **Throughput**: Handle as many requests/second as possible
 
 ### The Competition Flow
-1. You receive a stream of inference requests with 32 features each
+1. You receive a stream of inference requests with 79 features each
 2. Each request belongs to a specific symbol (SYM_001, SYM_002, etc.)
 3. The model maintains separate state for each symbol (like memory)
 4. You predict a single value per request
 5. The server scores you in real-time based on speed and accuracy
 
 ## Participant Guide
+
+### Connect to the server
+
+This section needs to be written.
+
+### Test changes locally
+
+You can run `python local_evaluator.py` to run the client you have (as defined in `example_model.py`) on some test data. It will give you the average latency of your model as well as the error you got compared to the theoretical prediction. It's a great way to check whether your changes have an impact on latency/accuracy.
+
+This is also a great script to profile to see where your client is spending most of its time.
 
 ### What You Need to Change
 
