@@ -109,9 +109,9 @@ class LocalEvaluator:
         print(f"Average latency: {metrics['avg_latency_ms']:.1f} ms")
 
         print("Tower Accuracies:")  # We have 4 towers
-        for tower_idx in range(4):
+        for tower_idx, tower_name in enumerate(["XLSTM", "Mamba2", "RetNet", "Hawk"]):
             max_error, mean_error = metrics[f"tower_{tower_idx}"]
-            print(f"Tower {tower_idx}: {max_error = :.4f}, {mean_error = :.4f}")
+            print(f"{tower_name}: {max_error = :.4f}, {mean_error = :.4f}")
 
 
 def main():

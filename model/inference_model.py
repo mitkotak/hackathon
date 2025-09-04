@@ -14,7 +14,7 @@ from .modules import SimpleMLP
 class LayerType(Enum):
     MAMBA2 = "mamba2"
     RETNET = "retnet"
-    Hawk = "hawk"
+    HAWK= "hawk"
     XLSTM = "xlstm"
 
 
@@ -40,7 +40,7 @@ def create_layer(layer_type: LayerType, hidden_size: int, num_heads: int = 8):
             return Mamba2(hidden_size=hidden_size)
         case LayerType.RETNET:
             return RetNet(hidden_size=hidden_size, num_heads=num_heads)
-        case LayerType.Hawk:
+        case LayerType.HAWK:
             return Hawk(hidden_size=hidden_size)
         case LayerType.XLSTM:
             return XLSTM(
@@ -108,7 +108,7 @@ class MultiTowerModel(nn.Module):
             LayerType.XLSTM,
             LayerType.MAMBA2,
             LayerType.RETNET,
-            LayerType.Hawk,
+            LayerType.HAWK,
         ]
 
         self.towers = nn.ModuleList(
