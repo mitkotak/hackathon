@@ -17,7 +17,9 @@ from example_model import NnInferenceClient
 
 
 class LocalEvaluator:
-    def __init__(self, requests_file: str):
+    def __init__(self, requests_file: str | None):
+        if requests_file is None:
+            requests_file = "sample_requests.parquet"
         self.requests_df = pd.read_parquet(requests_file)
         symbol_idxs = [int(sym[-3:]) for sym in self.requests_df["symbol"].unique()]
         self.num_symbols = max(symbol_idxs) + 1
@@ -121,7 +123,7 @@ class LocalEvaluator:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--requests-parquet-file", type=str, required=True)
+    parser.add_argument("--requests-parquet-file", type=str, default=None)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--token", type=str, default=None)
     args = parser.parse_args()
