@@ -2,17 +2,17 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .modules import CausalConv1d, get_model_device
+from .modules import BlockLinear, CausalConv1d, get_model_device
 
 
 class RGLRU(nn.Module):
-    def __init__(self, hidden_size: int, c: float = 8.0):
+    def __init__(self, hidden_size: int, num_blocks: int = 4, c: float = 8.0):
         super().__init__()
         self.hidden_size = hidden_size
         self.c = c
 
-        self.input_gate = nn.Linear(hidden_size, hidden_size, bias=False)
-        self.recurrence_gate = nn.Linear(hidden_size, hidden_size, bias=False)
+        self.input_gate = BlockLinear(num_blocks, hidden_size, bias=False)
+        self.recurrence_gate = BlockLinear(num_blocks, hidden_size, bias=False)
         self.a = nn.Parameter(torch.empty(hidden_size))
 
     def forward(self, x_t: torch.Tensor, state: torch.Tensor) -> torch.Tensor:
@@ -20,9 +20,6 @@ class RGLRU(nn.Module):
         assert hidden_size == self.hidden_size
         assert state.shape[0] == batch_size
 
-        # input_gate and recurrence_gate weights are *block diagonal matrices*
-        # here, they are implemented as [hidden_size, hidden_size] linear layers,
-        # but only 4 (num_blocks) equal sized squares along the diagonal are non-zero
         i_t = torch.sigmoid(self.input_gate(x_t))
         r_t = torch.sigmoid(self.recurrence_gate(x_t))
 

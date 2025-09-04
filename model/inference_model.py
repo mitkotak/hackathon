@@ -26,6 +26,7 @@ class ModelConfig:
     num_heads: int
     num_features: int
 
+
 def create_layer(layer_type: LayerType, hidden_size: int, num_heads: int = 8):
     """Factory function to create baseline models
 
@@ -121,8 +122,9 @@ class MultiTowerModel(nn.Module):
             for tower_state, tower in zip(state, self.towers, strict=True)
         ]
         xs, new_state = zip(*results, strict=True)
-        xs = self.output_proj(torch.stack(xs))
-        return xs.mean(dim=0), list(new_state)
+
+        xs = [self.output_proj(x) for x in xs]
+        return torch.concat(xs, dim=1), list(new_state)
 
     def init_state(self, batch_size, device):
         return [tower.init_state(batch_size, device) for tower in self.towers]

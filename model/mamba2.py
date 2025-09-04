@@ -58,7 +58,11 @@ class Mamba2(nn.Module):
         )
         return conv_states + [ssm_state]
 
-    def forward(self, t, state):
+    def forward(
+        self,
+        t: torch.Tensor,
+        state: tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor],
+    ):
         batch_size = t.shape[0]
 
         x = self.input_proj(t)
