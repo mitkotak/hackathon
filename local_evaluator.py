@@ -12,8 +12,8 @@ from collections import defaultdict as ddict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from client.client import PendingRequest
-from client.example_model import NnInferenceClient
+from client import PendingRequest
+from example_model import NnInferenceClient
 
 
 class LocalEvaluator:

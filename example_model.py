@@ -19,7 +19,7 @@ import torch
 from huggingface_hub import hf_hub_download
 
 from client import BaseInferenceClient, PendingRequest, InferenceResponse
-from client.model.inference_model import MultiTowerModel, ModelConfig
+from model.inference_model import MultiTowerModel, ModelConfig
 
 
 def get_default_device() -> torch.device:
