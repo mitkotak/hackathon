@@ -30,7 +30,7 @@ class LocalEvaluator:
             ]
             features = [float(row[col]) for col in feature_cols]
             req = PendingRequest(
-                unique_id=row["unique_id"],
+                unique_id=idx,
                 symbol=row["symbol"],
                 features=features,
                 received_time=time.time(),
@@ -68,7 +68,7 @@ class LocalEvaluator:
         target_cols = [x for x in self.requests_df.columns if x.startswith("target")]
 
         for idx, row in self.requests_df.iterrows():
-            unique_id = row["unique_id"]
+            unique_id = idx
             targets = [float(row[col]) for col in target_cols]
 
             if unique_id not in predictions:

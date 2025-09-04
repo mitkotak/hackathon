@@ -124,6 +124,9 @@ class BaseInferenceClient(ABC):
 
     def _receive_loop(self):
         """Background thread to receive messages from server."""
+
+        last_heartbeat_send = 0
+
         while self.running:
             try:
                 messages = self.reader.read_all_available()
@@ -136,9 +139,11 @@ class BaseInferenceClient(ABC):
                     elif isinstance(msg, ErrorMessage):
                         print(f"Server error: {msg.error}")
 
-                # Send heartbeat
-                if int(time.time()) % 10 == 0:
+
+                time_seconds = int(time.time())
+                if time_seconds % 5 == 0 and (time_seconds - last_heartbeat_send) >= 5:
                     self.writer.send_message(Heartbeat(timestamp=time.time()))
+                    last_heartbeat_send = time_seconds
 
                 time.sleep(0.001)
 
