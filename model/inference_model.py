@@ -14,7 +14,7 @@ from .modules import SimpleMLP
 class LayerType(Enum):
     MAMBA2 = "mamba2"
     RETNET = "retnet"
-    HAWK= "hawk"
+    HAWK = "hawk"
     XLSTM = "xlstm"
 
 
