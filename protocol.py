@@ -28,9 +28,9 @@ class RegisterMessage:
 
 @dataclass
 class InferenceRequest:
-    unique_id: int
-    symbol: str
-    features: List[float]  # 32 float32 values
+    unique_ids: list[int]
+    symbols: list[str]
+    features: list[list[float]]
     timestamp: float  # When sent by server
     message_type: str = MessageType.INFERENCE_REQUEST.value
 

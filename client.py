@@ -156,19 +156,21 @@ class BaseInferenceClient(ABC):
     def _handle_request(self, request: InferenceRequest):
         """Handle incoming inference request."""
 
-        pending = PendingRequest(
-            unique_id=request.unique_id,
-            symbol=request.symbol,
-            features=request.features,
-            received_time=time.time(),
-        )
+        for unique_id, symbol, features in zip(
+            request.unique_ids, request.symbols, request.features
+        ):
+            pending = PendingRequest(
+                unique_id=unique_id,
+                symbol=symbol,
+                features=features,
+                received_time=time.time(),
+            )
 
-        # Add to symbol queue
-        with self.queue_lock:
-            try:
-                self.request_queues[request.symbol].put_nowait(pending)
-            except queue.Full:
-                print(f"Queue full for symbol {request.symbol}, dropping request")
+            with self.queue_lock:
+                try:
+                    self.request_queues[symbol].put_nowait(pending)
+                except queue.Full:
+                    print(f"Queue full for symbol {symbol}, dropping request")
 
     def _handle_score(self, score: ScoreUpdate):
         """Handle score update from server."""
