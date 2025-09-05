@@ -1,7 +1,7 @@
 ## The Hackathon Challenge
 
 ### What You're Optimizing
-You're given a pre-built neural network that's **intentionally slow**. Your job is to make it fast without breaking its accuracy. The model is a complex ensemble of 4 different sequence models (Mamba2, RetNet, Hawk, and xLSTM) that process streaming data for 50+ different "symbols" (think stock tickers).
+You're given a pre-built neural network that's **intentionally slow**. Your job is to make it fast without breaking its accuracy. The model is a complex ensemble of 4 different sequence models (Mamba2, RetNet, Hawk, and xLSTM) that process streaming data for different "symbols" (think stock tickers).
 
 ### Your Goal
 
