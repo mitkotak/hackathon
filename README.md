@@ -62,4 +62,4 @@ The model has several expensive operations that are perfect targets for custom k
 - **xLSTM Cell Updates** (`client/model/xlstm.py:59-62`): Complex gated state updates
 - **Causal Convolutions**: Depthwise convs with state management
 
-All the above are just suggestions, please be creative, try things out, profile and find the important bottlenecks
+All the above are just suggestions, please be creative, try things out, profile and find the important bottlenecks.
