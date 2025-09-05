@@ -29,7 +29,7 @@ from protocol import (
 class PendingRequest:
     """A pending inference request."""
 
-    unique_id: str
+    unique_id: int
     symbol: str
     features: List[float]
     received_time: float
@@ -126,6 +126,8 @@ class BaseInferenceClient(ABC):
         """Background thread to receive messages from server."""
 
         last_heartbeat_send = 0
+        assert self.reader
+        assert self.writer
 
         while self.running:
             try:
