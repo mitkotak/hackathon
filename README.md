@@ -19,9 +19,22 @@ You need to balance 3 different metrics
 
 ## Participant Guide
 
+Once you are setup on Northflank, you should see various services on your team:
+- `code-participant-x`: those are to hack around individually and try to make changes to the model.
+- `code-team`: this is for the client that will connect to the server and run the inference model.
+
+All of those have a single H100.
+
 ### Connect to the server
 
-This section needs to be written.
+To connect to your server (from the `code-team` box), run the command
+```bash
+python team/example_model.py --host $SERVER_HOST --port 8001
+```
+
+You should see some print statements in the terminal you ran this and some changes in your team on the leaderboard.
+
+The `code-team` box shares data with the participant boxes (you should see `partipant-1` etc. subfolders). This makes it easy to roll changes developed on participant boxes. Make sure you make a backup of your team subfolder before rolling a new version however, in case you need to quickly revert your changes.
 
 ### Test changes locally
 
