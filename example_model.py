@@ -22,6 +22,11 @@ from client import BaseInferenceClient, PendingRequest, InferenceResponse
 from model.inference_model import MultiTowerModel, ModelConfig
 
 
+torch.set_float32_matmul_precision('high')
+compile = True
+# compile_mode = "max-autotune-no-cudagraphs"
+compile_mode = None
+
 def get_default_device() -> torch.device:
     if torch.cuda.is_available():
         return torch.device("cuda")
@@ -68,6 +73,8 @@ class NnInferenceClient(BaseInferenceClient):
         )
         weights = torch.load(weights_file, weights_only=True)
         self.model.load_state_dict(weights)
+
+        self.model = torch.compile(self.model, disable=not compile, mode=compile_mode, fullgraph=True)
 
     def process_batch(
         self, requests_by_symbol: Dict[str, List[PendingRequest]]
