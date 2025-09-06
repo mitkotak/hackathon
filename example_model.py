@@ -107,7 +107,7 @@ def main():
     parser.add_argument(
         "--num-symbols",
         type=int,
-        required=True,
+        default=20,
         help="Number of symbols in the tradeable universe",
     )
     parser.add_argument(
