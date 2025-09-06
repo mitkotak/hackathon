@@ -21,6 +21,11 @@ from huggingface_hub import hf_hub_download
 from client import BaseInferenceClient, PendingRequest, InferenceResponse
 from model.inference_model import MultiTowerModel, ModelConfig
 
+### Flags ###
+# Turn on Tensor Core
+torch.set_float32_matmul_precision('high')
+compile = False
+####
 
 def get_default_device() -> torch.device:
     if torch.cuda.is_available():
@@ -68,6 +73,10 @@ class NnInferenceClient(BaseInferenceClient):
         )
         weights = torch.load(weights_file, weights_only=True)
         self.model.load_state_dict(weights)
+
+        # Compile Model
+        self.model = torch.compile(self.model, disable=not compile, mode='reduce-overhead', fullgraph=True)
+
 
     def process_batch(
         self, requests_by_symbol: Dict[str, List[PendingRequest]]
