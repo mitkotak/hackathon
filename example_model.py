@@ -75,20 +75,25 @@ class NnInferenceClient(BaseInferenceClient):
         unique_ids, preds = [], []
 
         start = time.time()
+        with torch.inference_mode():
+            features_all = {
+                k: torch.tensor([i.features for i in v], device=self.device, dtype=torch.float32)
+                for k, v in requests_by_symbol.items()
+            }
 
-        for symbol, symbol_requests in requests_by_symbol.items():
-            state = self.states[symbol]
-            for req in symbol_requests:
-                features = torch.tensor([req.features], device=self.device)
+            for symbol, symbol_requests in requests_by_symbol.items():
+                state = self.states[symbol]
+                for req_i, req in enumerate(symbol_requests):
+                    features = features_all[symbol][None, req_i]
 
-                with torch.inference_mode():
                     pred, state = self.model(features, state)
+                    unique_ids.append(req.unique_id)
+                    preds.append(pred.to("cpu", non_blocking=True))
 
-                unique_ids.append(req.unique_id)
-                preds.append(pred.cpu().squeeze(0).numpy().astype(float).tolist())
+                self.states[symbol] = state
+            torch.cuda.synchronize()
 
-            self.states[symbol] = state
-
+        preds = [i.squeeze(0).numpy().astype(float).tolist() for i in preds]
         end = time.time()
         elapsed = end - start
 
